@@ -26,6 +26,11 @@ export class AppComponent {
   onClickSubmit(cadastro) {
     console.log(cadastro);
 
+    if(!cadastro.mensagem || cadastro.mensagem=="" ){
+      alert("A mensagem é obrigatória");
+      return;
+    }
+
     this.telegramMessage(
       "Nova mensagem " + JSON.stringify(cadastro, null, " ")
     );
