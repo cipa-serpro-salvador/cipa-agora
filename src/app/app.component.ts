@@ -2,6 +2,7 @@ import { Component } from "@angular/core";
 import { Postagem } from "./postagem";
 import { Observable } from "rxjs";
 import { TelegramService } from "./telegram.service";
+import { MailService } from './mail.service';
 
 @Component({
   selector: "app-root",
@@ -9,7 +10,7 @@ import { TelegramService } from "./telegram.service";
   styleUrls: ["./app.component.scss"]
 })
 export class AppComponent {
-  constructor(private telegram: TelegramService) {}
+  constructor(private telegram: TelegramService, private mail: MailService) {}
 
   title = "cipa-agora";
   submitted = false;
@@ -31,9 +32,22 @@ export class AppComponent {
       return;
     }
 
+    this.mailMessage(
+      "Nova mensagem " + JSON.stringify(cadastro, null, " ")
+    );
+
     this.telegramMessage(
       "Nova mensagem " + JSON.stringify(cadastro, null, " ")
     );
+  }
+
+
+  mailMessage(mensagem) {
+    mensagem = encodeURI(mensagem);
+    return this.mail.Notificar(mensagem).subscribe((data: {}) => {
+      console.log(data);
+      alert("Mensagem enviada com sucesso, em breve entraremos em contato")
+    });
   }
 
   telegramMessage(mensagem) {
@@ -41,7 +55,7 @@ export class AppComponent {
     const apiUrl = `${this.telegramUrl}${mensagem}`;
     return this.telegram.Notificar(mensagem).subscribe((data: {}) => {
       console.log(data);
-      alert("Mensagem enviada com sucesso, em breve entraremos em contato")
+      // alert("Mensagem enviada com sucesso, em breve entraremos em contato")
     });
   }
 }
