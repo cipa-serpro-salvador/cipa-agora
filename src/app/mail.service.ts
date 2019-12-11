@@ -22,7 +22,7 @@ export class MailService {
 
   // GET
   Notificar(postagem): Observable<Postagem> {
-    return this.http.get<Postagem>(this.baseurl + encodeURI(postagem)).pipe(
+    return this.http.get<Postagem>(this.baseurl + postagem).pipe(
       retry(1),
       catchError(this.errorHandl)
     );
