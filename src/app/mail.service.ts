@@ -1,5 +1,5 @@
 import { Injectable } from "@angular/core";
-import { HttpClient, HttpHeaders } from "@angular/common/http";
+import { HttpClient, HttpHeaders, HttpParams } from "@angular/common/http";
 import { Observable, throwError } from "rxjs";
 import { retry, catchError } from "rxjs/operators";
 import { Postagem } from "./postagem";
@@ -10,19 +10,34 @@ import { Postagem } from "./postagem";
 export class MailService {
   // Base url
   baseurl =
-    "http://cipa.rf.gd/PHPMailer/examples/gmail.php?body=";
+    "http://cipa.rf.gd/PHPMailer/examples/gmail.php";
+
   constructor(private http: HttpClient) {}
 
-  // Http Headers
-  httpOptions = {
-    headers: new HttpHeaders({
-      "Content-Type": "text/plain"
-    })
-  };
+
+
 
   // GET
-  Notificar(postagem): Observable<Postagem> {
-    return this.http.get<Postagem>(this.baseurl + postagem).pipe(
+  Notificar(postagem): Observable<any> {
+
+
+
+    const params = new HttpParams()
+    .set('body', postagem);
+
+
+      // return this.http.post<any>(this.baseurl, postagem)
+      //   .pipe(
+      //     catchError(this.errorHandl)
+      //   );
+
+    // return this.http.post<any>(this.baseurl, { params }).subscribe(data => {
+    //   // next: data => {},
+    //   error: error => console.error('There was an error!', error)
+    // });
+
+    return this.http.get<any>(this.baseurl,  {params}).pipe(
+      // return this.http.get<Postagem>('http://127.0.0.1:8080/').pipe(
       retry(1),
       catchError(this.errorHandl)
     );

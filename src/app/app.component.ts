@@ -43,10 +43,9 @@ export class AppComponent {
 
 
   mailMessage(mensagem) {
-    mensagem = encodeURI(mensagem);
     return this.mail.Notificar(mensagem).subscribe((data: {}) => {
       console.log(data);
-      alert("Mensagem enviada com sucesso, em breve entraremos em contato")
+      alert("Mensagem enviada com sucesso, em breve entraremos em contato");
     });
   }
 
